@@ -30,7 +30,7 @@ runs:
       if: ${{ inputs.action == 'plan' }}
       shell: bash
       env: 
-        TF_VAR_domain: ${{ inputs.domain }}
+        TF_VAR_hosted_zone_domain: ${{ inputs.domain }}
         TF_VAR_subdomain: ${{ inputs.subdomain }}
       run: | 
         terraform plan
