@@ -1,5 +1,5 @@
-name: 'Actions AWS backend setup'
-description: 'Search or Create Terraform backend resources on AWS'
+name: 'Actions AWS Website'
+description: 'Provision all the resource required to host a website in AWS'
 inputs:
   domain: 
     description: 'Domain of your AWS Hosted Zone'
@@ -12,7 +12,8 @@ inputs:
     description: 'folder to publish'
   action: 
     description: "desire outcome: apply, plan or destroy"
-    default: plan
+    required: false
+    default: "plan"
 
 runs:
   using: "composite"
