@@ -26,7 +26,7 @@ runs:
         -backend-config="dynamodb_table=${TF_BACKEND_dynamodb}" \
         -backend-config="key=${inputs.subdomain}.${inputs.domain}" 
     - name: plan
-      if: ${{ inputs.action == "plan" }}
+      if: ${{ inputs.action == 'plan' }}
       shell: bash
       env: 
         TF_VAR_domain: ${{ inputs.domain }}
