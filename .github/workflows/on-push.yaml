@@ -24,7 +24,7 @@ jobs:
       - uses: alonch/actions-aws-backend-setup@main
         with: 
           instance: petro
-      - uses: alonch/actions-aws-website
+      - uses: alonch/actions-aws-website@main
         with: 
           domain: realsense.ca
           subdomain: actions-aws-website
