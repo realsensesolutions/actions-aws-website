@@ -10,5 +10,5 @@ variable "subdomain" {
 }
 
 locals {
-  domain = var.subdomain ? "${var.subdomain}.${var.hosted_zone_domain}" : "${var.hosted_zone_domain}"
+  domain = var.subdomain == "" ? "${var.subdomain}.${var.hosted_zone_domain}" : "${var.hosted_zone_domain}"
 }
