@@ -1,0 +1,43 @@
+name: 'Actions AWS backend setup'
+description: 'Search or Create Terraform backend resources on AWS'
+inputs:
+  domain: 
+    description: 'Domain of your AWS Hosted Zone'
+    required: true
+  subdomain:
+    description: 'Optional subdomain'
+    required: false
+    default: ''
+  path:
+    description: 'folder to publish'
+  action: 
+    description: "desire outcome: apply, plan or destroy"
+    default: plan
+
+runs:
+  using: "composite"
+  steps:
+    - uses: hashicorp/setup-terraform@v3
+    - name: init 
+      shell: bash
+      run: terraform init \
+        -backend-config="bucket=${TF_BACKEND_s3}" \
+        -backend-config="dynamodb_table=${TF_BACKEND_dynamodb}" \
+        -backend-config="key=${inputs.subdomain}.${inputs.domain}" 
+    - name: plan
+      if: ${{ inputs.action == "plan" }}
+      shell: bash
+      env: 
+        TF_VAR_domain: ${{ inputs.domain }}
+        TF_VAR_subdomain: ${{ inputs.subdomain }}
+      run: | 
+        terraform plan
+        ACTIONS_AWS_WEBSITE_BUCKET=$(terraform output -raw bucket_name)
+        echo "ACTIONS_AWS_WEBSITE_BUCKET=$ACTIONS_AWS_WEBSITE_BUCKET" >> $GITHUB_ENV
+        echo "domain-bucket=$ACTIONS_AWS_WEBSITE_BUCKET" >> $GITHUB_OUTPUT
+        
+        ACTIONS_AWS_WEBSITE=$(terraform output -raw domain)
+        echo "ACTIONS_AWS_WEBSITE=$ACTIONS_AWS_WEBSITE" >> $GITHUB_ENV
+        echo "website=$ACTIONS_AWS_WEBSITE" >> $GITHUB_OUTPUT
+            
+      
