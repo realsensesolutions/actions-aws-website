@@ -33,7 +33,7 @@ runs:
         TF_VAR_subdomain: ${{ inputs.subdomain }}
         ACTION: ${{ inputs.action }}
         # if action is plan add '-auto-aprove' to run
-        ACTION_ARGS: ${{ inputs.action == "plan" && "" || "-auto-approve" }} 
+        ACTION_ARGS: ${{ inputs.action == 'plan' && '' || '-auto-approve' }} 
       run: terraform ${{ env.ACTION }} ${{ env.ACTION_ARGS}}
     - name: set outputs
       shell: bash
