@@ -54,7 +54,7 @@ runs:
         ACTION_ARGS: ${{ inputs.action != 'plan' && '-auto-approve' || '' }} 
       run: terraform ${{ env.ACTION }} ${{ env.ACTION_ARGS }}
     - name: set outputs
-      if: ${{ inputs.action == "apply" }}
+      if: ${{ inputs.action == 'apply' }}
       shell: bash
       run: |
         terraform output -raw bucket_name
