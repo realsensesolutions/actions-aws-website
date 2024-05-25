@@ -37,11 +37,7 @@ runs:
       #  - example.com
       run: |
         HOSTED_ZONE_DOMAIN=$(aws route53 list-hosted-zones | \
-          jq -r --arg domain "$DOMAIN" \
-            '.HostedZones[] | \
-            select($domain | \
-            endswith(.Name)) | \
-            .Name')
+          jq -r --arg domain "$DOMAIN" '.HostedZones[] | select($domain | endswith(.Name)) | .Name')
         echo "hosted-zone-domain=$HOSTED_ZONE_DOMAIN" >> $GITHUB_OUTPUT
 
     - name: run action
