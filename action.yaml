@@ -32,9 +32,9 @@ runs:
         TF_VAR_hosted_zone_domain: ${{ inputs.domain }}
         TF_VAR_subdomain: ${{ inputs.subdomain }}
         ACTION: ${{ inputs.action }}
-      run: | 
-        terraform ${{ env.ACTION }} -auto-approve
-
+        # if action is plan add '-auto-aprove' to run
+        ACTION_ARGS: ${{ inputs.action == "plan" && "" || "-auto-approve" }} 
+      run: terraform ${{ env.ACTION }} ${{ env.ACTION_ARGS}}
     - name: set outputs
       shell: bash
       run: |
