@@ -38,6 +38,7 @@ runs:
     - name: set outputs
       shell: bash
       run: |
+        terraform output -raw bucket_name
         ACTIONS_AWS_WEBSITE_BUCKET=$(terraform output -raw bucket_name)
         if [ -n "$ACTIONS_AWS_WEBSITE_BUCKET" ]; then 
           echo "ACTIONS_AWS_WEBSITE_BUCKET=$ACTIONS_AWS_WEBSITE_BUCKET" >> $GITHUB_ENV
