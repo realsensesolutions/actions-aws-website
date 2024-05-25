@@ -36,8 +36,9 @@ runs:
       #  - abc.example.com 
       #  - example.com
       run: |
-        HOSTED_ZONE_DOMAIN=$(aws route53 list-hosted-zones | \
-          jq -r --arg domain "$DOMAIN" '.HostedZones[] | select($domain | endswith(.Name)) | .Name')
+        HOSTED_ZONE_DOMAIN=$(aws route53 list-hosted-zones --output json | \
+          jq -r '.HostedZones[].Name' | \
+          python3 search-hosted-zone.py ${{ env.DOMAIN }}
         echo "hosted-zone-domain=$HOSTED_ZONE_DOMAIN" >> $GITHUB_OUTPUT
 
     - name: run action
