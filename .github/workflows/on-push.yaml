@@ -26,8 +26,7 @@ jobs:
           instance: petro
       - uses: alonch/actions-aws-website@main
         with: 
-          domain: realsense.ca
-          subdomain: actions-aws-website
+          domain: actions-aws-website.realsense.ca
           path: public
             
       - run: echo "$ACTIONS_AWS_WEBSITE"

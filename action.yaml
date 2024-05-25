@@ -26,16 +26,35 @@ runs:
           -backend-config="bucket=${{ env.TF_BACKEND_s3 }}" \
           -backend-config="dynamodb_table=${{ env.TF_BACKEND_dynamodb }}" \
           -backend-config="key=${{inputs.subdomain}}.${{inputs.domain}}" 
+    - name: search hosted zone domain
+      shell: bash
+      id: route53
+      env: 
+        DOMAIN: ${{ inputs.domain }}
+      # search the closest hosted zone for example: 
+      #  domain:abc.example.com will match a hosted zone with: 
+      #  - abc.example.com 
+      #  - example.com
+      run: |
+        HOSTED_ZONE_DOMAIN=$(aws route53 list-hosted-zones | \
+          jq -r --arg domain "$DOMAIN" \
+            '.HostedZones[] | \
+            select($domain | \
+            endswith(.Name)) | \
+            .Name')
+        echo "hosted-zone-domain=$HOSTED_ZONE_DOMAIN" >> $GITHUB_OUTPUT
+
     - name: run action
       shell: bash
       env: 
-        TF_VAR_hosted_zone_domain: ${{ inputs.domain }}
-        TF_VAR_subdomain: ${{ inputs.subdomain }}
+        TF_VAR_hosted_zone_domain: ${{ steps.route53.outputs.hosted-zone-domain }}
+        TF_VAR_domain: ${{ inputs.domain }}
         ACTION: ${{ inputs.action }}
         # if action is plan add '-auto-aprove' to run
         ACTION_ARGS: ${{ inputs.action != 'plan' && '-auto-approve' || '' }} 
       run: terraform ${{ env.ACTION }} ${{ env.ACTION_ARGS }}
     - name: set outputs
+      if: ${{ inputs.action == "apply" }}
       shell: bash
       run: |
         terraform output -raw bucket_name
