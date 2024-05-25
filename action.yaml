@@ -26,20 +26,28 @@ runs:
           -backend-config="bucket=${{ env.TF_BACKEND_s3 }}" \
           -backend-config="dynamodb_table=${{ env.TF_BACKEND_dynamodb }}" \
           -backend-config="key=${{inputs.subdomain}}.${{inputs.domain}}" 
-    - name: plan
-      if: ${{ inputs.action == 'plan' }}
+    - name: run action
       shell: bash
       env: 
         TF_VAR_hosted_zone_domain: ${{ inputs.domain }}
         TF_VAR_subdomain: ${{ inputs.subdomain }}
+        ACTION: ${{ inputs.action }}
       run: | 
-        terraform plan
+        terraform ${{ env.ACTION }} -auto-approve
+
+    - name: set outputs
+      shell: bash
+      run: |
         ACTIONS_AWS_WEBSITE_BUCKET=$(terraform output -raw bucket_name)
-        echo "ACTIONS_AWS_WEBSITE_BUCKET=$ACTIONS_AWS_WEBSITE_BUCKET" >> $GITHUB_ENV
-        echo "domain-bucket=$ACTIONS_AWS_WEBSITE_BUCKET" >> $GITHUB_OUTPUT
+        if [ -n "$ACTIONS_AWS_WEBSITE_BUCKET" ]; then 
+          echo "ACTIONS_AWS_WEBSITE_BUCKET=$ACTIONS_AWS_WEBSITE_BUCKET" >> $GITHUB_ENV
+          echo "domain-bucket=$ACTIONS_AWS_WEBSITE_BUCKET" >> $GITHUB_OUTPUT
+        fi
         
         ACTIONS_AWS_WEBSITE=$(terraform output -raw domain)
-        echo "ACTIONS_AWS_WEBSITE=$ACTIONS_AWS_WEBSITE" >> $GITHUB_ENV
-        echo "website=$ACTIONS_AWS_WEBSITE" >> $GITHUB_OUTPUT
+        if [ -n "$ACTIONS_AWS_WEBSITE" ]; then
+          echo "ACTIONS_AWS_WEBSITE=$ACTIONS_AWS_WEBSITE" >> $GITHUB_ENV
+          echo "website=$ACTIONS_AWS_WEBSITE" >> $GITHUB_OUTPUT
+        if
             
       
