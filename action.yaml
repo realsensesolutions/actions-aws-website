@@ -48,6 +48,7 @@ runs:
         if [ -n "$ACTIONS_AWS_WEBSITE" ]; then
           echo "ACTIONS_AWS_WEBSITE=$ACTIONS_AWS_WEBSITE" >> $GITHUB_ENV
           echo "website=$ACTIONS_AWS_WEBSITE" >> $GITHUB_OUTPUT
-        if
+        fi
+
             
       
