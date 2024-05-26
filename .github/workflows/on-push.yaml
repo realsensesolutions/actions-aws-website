@@ -31,4 +31,4 @@ jobs:
         with: 
           domain: ${{ env.DOMAIN }}
           path: public
-          action: apply
+          action: destroy
