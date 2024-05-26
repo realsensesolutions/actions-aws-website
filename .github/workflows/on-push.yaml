@@ -5,16 +5,15 @@ on:
       - main
 env: 
   region: us-east-1
+  DOMAIN: actions-aws-website.realsense.ca
 jobs:
-  
-
   tf-plan:
     permissions: 
       id-token: write
     runs-on: ubuntu-latest
     environment: 
       name: production
-      url: "https://${{ steps.website.outputs.domain }}"
+      url: "https://${{ env.DOMAIN }}"
 
     steps:
       - name: Check out repo
@@ -30,6 +29,6 @@ jobs:
       - uses: alonch/actions-aws-website@main
         id: website
         with: 
-          domain: actions-aws-website.realsense.ca
+          domain: ${{ env.DOMAIN }}
           path: public
           action: apply

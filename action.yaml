@@ -65,6 +65,12 @@ runs:
           echo "ACTIONS_AWS_DOMAIN=$ACTIONS_AWS_DOMAIN" >> $GITHUB_ENV
           echo "domain=$ACTIONS_AWS_DOMAIN" >> $GITHUB_OUTPUT
         fi
+    - name: sync content
+      if: ${{ inputs.action == 'apply' }}
+      shell: bash
+      env: 
+        CONTENT_FOLDER: ${{ inputs.path }}
+      run: aws s3 sync ${{ env.CONTENT_FOLDER }} s3://${{ env.ACTIONS_AWS_WEBSITE_BUCKET }}
 
             
       
