@@ -24,10 +24,10 @@ jobs:
           role-session-name: ${{ github.repository_owner }}-${{ github.actor }}
       - uses: alonch/actions-aws-backend-setup@main
         with: 
-          instance: petro
+          instance: demo
       - uses: alonch/actions-aws-website@main
         id: website
         with: 
           domain: ${{ env.DOMAIN }}
-          path: public
-          action: destroy
+          content-path: public
+          action: apply
