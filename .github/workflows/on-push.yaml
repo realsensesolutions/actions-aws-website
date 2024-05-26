@@ -4,7 +4,7 @@ on:
     branches:
       - main
 env: 
-  region: us-east-1
+  AWS_REGION: us-east-1
   DOMAIN: actions-aws-website.realsense.ca
 jobs:
   tf-plan:
@@ -20,7 +20,7 @@ jobs:
         uses: actions/checkout@v4
       - uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-region: ${{ env.region }}
+          aws-region: us-east-1
           role-to-assume: ${{ secrets.ROLE_ARN }}
           role-session-name: ${{ github.repository_owner }}-${{ github.actor }}
       - uses: alonch/actions-aws-backend-setup@main
