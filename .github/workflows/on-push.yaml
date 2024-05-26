@@ -7,14 +7,13 @@ env:
   AWS_REGION: us-east-1
   DOMAIN: actions-aws-website.realsense.ca
 jobs:
-  tf-plan:
+  deploy:
     permissions: 
       id-token: write
     runs-on: ubuntu-latest
     environment: 
       name: production
       url: "https://${{ env.DOMAIN }}"
-
     steps:
       - name: Check out repo
         uses: actions/checkout@v4

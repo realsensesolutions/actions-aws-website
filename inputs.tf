@@ -6,5 +6,4 @@ variable "hosted_zone_domain" {
 variable "domain" {
   description = "Full domain to host the Website"
   type        = string
-  default     = ""
 }

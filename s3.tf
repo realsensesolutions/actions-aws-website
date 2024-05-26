@@ -1,5 +1,6 @@
 resource "aws_s3_bucket" "website" {
   bucket_prefix = var.domain
+  force_destroy = true
 }
 
 resource "aws_s3_bucket_website_configuration" "website" {
