@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: 
       name: production
-      url: ${{ steps.website.outputs.domain }}
+      url: "https://${{ steps.website.outputs.domain }}"
 
     steps:
       - name: Check out repo
