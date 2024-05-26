@@ -40,7 +40,6 @@ runs:
           jq -r '.HostedZones[].Name' | \
           awk -v domain=${{ env.DOMAIN }}. '{if (index(domain, $0) != 0) print $0}')
         echo "hosted-zone-domain=$HOSTED_ZONE_DOMAIN" >> $GITHUB_OUTPUT
-
     - name: run action
       shell: bash
       env: 
@@ -61,10 +60,10 @@ runs:
           echo "domain-bucket=$ACTIONS_AWS_WEBSITE_BUCKET" >> $GITHUB_OUTPUT
         fi
         
-        ACTIONS_AWS_WEBSITE=$(terraform output -raw domain)
-        if [ -n "$ACTIONS_AWS_WEBSITE" ]; then
-          echo "ACTIONS_AWS_WEBSITE=$ACTIONS_AWS_WEBSITE" >> $GITHUB_ENV
-          echo "website=$ACTIONS_AWS_WEBSITE" >> $GITHUB_OUTPUT
+        ACTIONS_AWS_DOMAIN=$(terraform output -raw domain)
+        if [ -n "$ACTIONS_AWS_DOMAIN" ]; then
+          echo "ACTIONS_AWS_DOMAIN=$ACTIONS_AWS_DOMAIN" >> $GITHUB_ENV
+          echo "domain=$ACTIONS_AWS_DOMAIN" >> $GITHUB_OUTPUT
         fi
 
             

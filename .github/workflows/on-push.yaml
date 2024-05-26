@@ -12,6 +12,9 @@ jobs:
     permissions: 
       id-token: write
     runs-on: ubuntu-latest
+    environment: 
+      name: production
+      url: ${{ steps.website.outputs.domain }}
 
     steps:
       - name: Check out repo
@@ -25,8 +28,8 @@ jobs:
         with: 
           instance: petro
       - uses: alonch/actions-aws-website@main
+        id: website
         with: 
           domain: actions-aws-website.realsense.ca
           path: public
-            
-      - run: echo "$ACTIONS_AWS_WEBSITE"
+          action: apply
