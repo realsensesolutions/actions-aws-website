@@ -53,7 +53,7 @@ jobs:
     steps:
       - name: health check
         run: |
-          status_code=$(curl -o /dev/null -s -w "%{http_code}" ${{ env.DOMAIN}})
+          status_code=$(curl -o /dev/null -s -w "%{http_code}" https://${{ env.DOMAIN}})
           if [ "$status_code" -ne 200 ]; then
             exit 1
           fi

@@ -2,12 +2,12 @@ name: 'Actions AWS Website'
 description: 'Provision all the resource required to host a website in AWS'
 inputs:
   domain: 
-    description: 'Domain of your AWS Hosted Zone'
+    description: 'Full domain of the website'
     required: true
   content-path:
-    description: 'folder to publish'
+    description: 'folder to publish as root of the website'
   action: 
-    description: "desire outcome: apply, plan or destroy"
+    description: "Desire outcome: apply, plan or destroy"
     required: false
     default: "plan"
 
