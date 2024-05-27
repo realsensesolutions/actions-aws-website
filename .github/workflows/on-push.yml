@@ -27,7 +27,6 @@ jobs:
         with: 
           domain: ${{ env.DOMAIN }}
           content-path: public
-          action: apply
   plan:
     needs: apply
     runs-on: ubuntu-latest

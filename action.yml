@@ -9,7 +9,7 @@ inputs:
   action: 
     description: "Desire outcome: apply, plan or destroy"
     required: false
-    default: "plan"
+    default: "apply"
 
 runs:
   using: "composite"
@@ -65,11 +65,8 @@ runs:
           echo "domain=$ACTIONS_AWS_DOMAIN" >> $GITHUB_OUTPUT
         fi
     - name: sync content
-      if: ${{ inputs.action == 'apply' }}
+      if: ${{ inputs.action == 'apply' && inputs.content-path}}
       shell: bash
       env: 
         CONTENT_PATH: ${{ inputs.content-path }}
       run: aws s3 sync ${{ env.CONTENT_PATH }} s3://${{ env.ACTIONS_AWS_WEBSITE_BUCKET }} --delete
-
-            
-      

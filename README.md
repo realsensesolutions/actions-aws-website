@@ -15,7 +15,7 @@ Provision all the resource required to host a website in AWS
 | --- | --- | --- | --- |
 | `domain` | <p>Full domain of the website</p> | `true` | `""` |
 | `content-path` | <p>folder to publish as root of the website</p> | `false` | `""` |
-| `action` | <p>Desire outcome: apply, plan or destroy</p> | `false` | `plan` |
+| `action` | <p>Desire outcome: apply, plan or destroy</p> | `false` | `apply` |
 <!-- action-docs-inputs source="action.yml" -->
 
 <!-- action-docs-outputs source="action.yml" -->
@@ -32,7 +32,7 @@ Provision all the resource required to host a website in AWS
 permissions: 
   id-token: write
 jobs:
-  apply:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repo
@@ -49,6 +49,5 @@ jobs:
         with: 
           domain: ${{ env.DOMAIN }}
           content-path: public
-          action: apply
 ```
 
