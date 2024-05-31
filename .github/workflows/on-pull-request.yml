@@ -1,8 +1,8 @@
 name: Deploy Ephemeral Environment
 on:
   pull_request:
+    types: [opened, synchronize, reopened, closed]
 env: 
-  AWS_REGION: us-east-1
   DOMAIN: ${{github.head_ref}}.test.realsense.ca
 permissions: 
   id-token: write
@@ -24,7 +24,6 @@ jobs:
         with: 
           instance: demo
       - uses: alonch/actions-aws-website@main
-        id: website
         with: 
           domain: ${{ env.DOMAIN }}
           content-path: public
