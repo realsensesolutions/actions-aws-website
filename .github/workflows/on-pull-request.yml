@@ -1,9 +1,9 @@
-name: e2e
+name: Deploy Ephemeral Environment
 on:
   pull_request:
 env: 
   AWS_REGION: us-east-1
-  DOMAIN: ${{github.head_ref}}.actions-aws-website.realsense.ca
+  DOMAIN: ${{github.head_ref}}.test.realsense.ca
 permissions: 
   id-token: write
 jobs:
