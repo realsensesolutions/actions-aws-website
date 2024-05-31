@@ -29,11 +29,3 @@ resource "aws_route53_record" "cert_validation" {
   type            = each.value.type
   zone_id         = data.aws_route53_zone.primary.zone_id
 }
-
-resource "aws_route53_record" "domain_ownership_cname" {
-  zone_id = data.aws_route53_zone.primary.zone_id
-  name    = "_."
-  type    = "TXT"
-  ttl     = 900
-  records = [aws_cloudfront_distribution.cloudfront.domain_name]
-}
