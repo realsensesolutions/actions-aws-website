@@ -24,7 +24,6 @@ jobs:
         with: 
           instance: demo
       - uses: alonch/actions-aws-website@main
-        id: web site
         with: 
           domain: ${{ env.DOMAIN }}
           content-path: public
