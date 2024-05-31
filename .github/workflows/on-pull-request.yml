@@ -7,27 +7,10 @@ env:
 permissions: 
   id-token: write
 jobs:
-  # apply:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Check out repo
-  #       uses: actions/checkout@v4
-  #     - uses: aws-actions/configure-aws-credentials@v4
-  #       with:
-  #         aws-region: us-east-1
-  #         role-to-assume: ${{ secrets.ROLE_ARN }}
-  #         role-session-name: ${{ github.repository_owner }}-${{ github.actor }}
-  #     - uses: alonch/actions-aws-backend-setup@main
-  #       with: 
-  #         instance: demo
-  #     - uses: alonch/actions-aws-website@main
-  #       id: website
-  #       with: 
-  #         domain: 
-  #         content-path: public
-  #         action: plan
-  plan:
-    # needs: apply
+  deploy:
+    environment:
+      url: "https://${{ env.DOMAIN }}"
+      name: ${{github.head_ref}}
     runs-on: ubuntu-latest
     steps:
       - name: Check out repo
@@ -36,7 +19,7 @@ jobs:
         with:
           aws-region: us-east-1
           role-to-assume: ${{ secrets.ROLE_ARN }}
-          role-session-name: ${{ github.repository_owner }}-${{ github.actor }}
+          role-session-name: ${{ github.actor }}
       - uses: alonch/actions-aws-backend-setup@main
         with: 
           instance: demo
@@ -44,24 +27,6 @@ jobs:
         id: website
         with: 
           domain: ${{ env.DOMAIN }}
-          action: plan
-      
-  # destroy:
-  #   needs: plan    
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Check out repo
-  #       uses: actions/checkout@v4
-  #     - uses: aws-actions/configure-aws-credentials@v4
-  #       with:
-  #         aws-region: us-east-1
-  #         role-to-assume: ${{ secrets.ROLE_ARN }}
-  #         role-session-name: ${{ github.repository_owner }}-${{ github.actor }}
-  #     - uses: alonch/actions-aws-backend-setup@main
-  #       with: 
-  #         instance: demo
-  #     - uses: alonch/actions-aws-website@main
-  #       id: website
-  #       with: 
-  #         domain: ${{ env.DOMAIN }}
-  #         action: destroy
+          content-path: public
+          # destroy when PR closed
+          action: ${{github.event.action == 'closed' && 'destroy' || 'apply'}}
