@@ -1,0 +1,32 @@
+name: Deploy Ephemeral Environment
+on:
+  pull_request:
+env: 
+  AWS_REGION: us-east-1
+  DOMAIN: ${{github.head_ref}}.test.realsense.ca
+permissions: 
+  id-token: write
+jobs:
+  deploy:
+    environment:
+      url: "https://${{ env.DOMAIN }}"
+      name: ${{github.head_ref}}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: us-east-1
+          role-to-assume: ${{ secrets.ROLE_ARN }}
+          role-session-name: ${{ github.actor }}
+      - uses: alonch/actions-aws-backend-setup@main
+        with: 
+          instance: demo
+      - uses: alonch/actions-aws-website@main
+        id: website
+        with: 
+          domain: ${{ env.DOMAIN }}
+          content-path: public
+          # destroy when PR closed
+          action: ${{github.event.action == 'closed' && 'destroy' || 'apply'}}
