@@ -1,6 +1,7 @@
 name: Deploy Ephemeral Environment
 on:
   pull_request:
+    types: [opened, synchronize, reopened, closed]
 env: 
   DOMAIN: ${{github.head_ref}}.test.realsense.ca
 permissions: 
@@ -23,7 +24,7 @@ jobs:
         with: 
           instance: demo
       - uses: alonch/actions-aws-website@main
-        id: website
+        id: web site
         with: 
           domain: ${{ env.DOMAIN }}
           content-path: public
