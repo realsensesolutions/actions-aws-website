@@ -64,9 +64,19 @@ runs:
           echo "ACTIONS_AWS_DOMAIN=$ACTIONS_AWS_DOMAIN" >> $GITHUB_ENV
           echo "domain=$ACTIONS_AWS_DOMAIN" >> $GITHUB_OUTPUT
         fi
+
+        ACTIONS_AWS_DISTRIBUTION_ID=$(terraform output -raw cloudfront_distribution_id)
+        if [ -n "$ACTIONS_AWS_DISTRIBUTION_ID" ]; then
+          echo "ACTIONS_AWS_DISTRIBUTION_ID=$ACTIONS_AWS_DISTRIBUTION_ID" >> $GITHUB_ENV
+          echo "distribution-id=$ACTIONS_AWS_DISTRIBUTION_ID" >> $GITHUB_OUTPUT
+        fi
+        
     - name: sync content
       if: ${{ inputs.action == 'apply' && inputs.content-path}}
       shell: bash
       env: 
         CONTENT_PATH: ${{ inputs.content-path }}
-      run: aws s3 sync ${{ env.CONTENT_PATH }} s3://${{ env.ACTIONS_AWS_WEBSITE_BUCKET }} --delete
+      run: |
+        aws s3 sync ${{ env.CONTENT_PATH }} s3://${{ env.ACTIONS_AWS_WEBSITE_BUCKET }} --delete
+        aws cloudfront create-invalidation --distribution-id $ACTIONS_AWS_DISTRIBUTION_ID --paths "/*" 
+        
