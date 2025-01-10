@@ -17,3 +17,7 @@ output "cloudfront_distribution_id" {
 output "domain" {
   value = var.domain
 }
+
+output "cloudfront_distribution_domain_name" {
+  value = aws_cloudfront_distribution.cloudfront.domain_name
+}
