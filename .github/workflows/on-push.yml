@@ -25,7 +25,7 @@ jobs:
       - uses: alonch/actions-aws-website@main
         id: website
         with: 
-          domain: ${{ env.DOMAIN }}
+          # domain: ${{ env.DOMAIN }}
           content-path: public
   plan:
     needs: apply

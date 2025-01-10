@@ -1,4 +1,5 @@
 resource "aws_acm_certificate" "website_cert" {
+  count                     = var.domain != "" ? 1 : 0 
   domain_name               = var.domain
   validation_method         = "DNS"
 
@@ -8,6 +9,7 @@ resource "aws_acm_certificate" "website_cert" {
 }
 
 resource "aws_acm_certificate_validation" "website_cert" {
-  certificate_arn         = aws_acm_certificate.website_cert.arn
+  count                   = var.domain != "" ? 1 : 0
+  certificate_arn         = aws_acm_certificate.website_cert[0].arn
   validation_record_fqdns = [for record in aws_route53_record.cert_validation : record.fqdn]
 }

@@ -3,7 +3,7 @@ description: 'Provision all the resource required to host a website in AWS'
 inputs:
   domain: 
     description: 'Full domain of the website'
-    required: true
+    required: false
   content-path:
     description: 'folder to publish as root of the website'
   action: 
@@ -25,10 +25,11 @@ runs:
         terraform init \
           -backend-config="bucket=${{ env.TF_BACKEND_s3 }}" \
           -backend-config="dynamodb_table=${{ env.TF_BACKEND_dynamodb }}" \
-          -backend-config="key=${{inputs.subdomain}}.${{inputs.domain}}" 
+          -backend-config="key=${{ inputs.domain || 'empty' }}" 
     - name: search hosted zone domain
       shell: bash
       id: route53
+      if: inputs.domain
       env: 
         DOMAIN: ${{ inputs.domain }}
       # search the closest hosted zone for example: 

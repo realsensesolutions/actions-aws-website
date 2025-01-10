@@ -1,9 +1,11 @@
 data "aws_route53_zone" "primary" {
+  count        = var.hosted_zone_domain != "" ? 1 : 0
   name = var.hosted_zone_domain
 }
 
 resource "aws_route53_record" "domain" {
-  zone_id = data.aws_route53_zone.primary.zone_id
+  count   = var.domain != "" ? 1 : 0
+  zone_id = data.aws_route53_zone.primary[0].zone_id
   name    = var.domain
   type    = "A"
 
@@ -16,7 +18,7 @@ resource "aws_route53_record" "domain" {
 
 resource "aws_route53_record" "cert_validation" {
   for_each = {
-    for dvo in aws_acm_certificate.website_cert.domain_validation_options : dvo.domain_name => {
+    for dvo in var.domain != "" ? aws_acm_certificate.website_cert[0].domain_validation_options: [] : dvo.domain_name => {
       name   = dvo.resource_record_name
       record = dvo.resource_record_value
       type   = dvo.resource_record_type
@@ -27,5 +29,5 @@ resource "aws_route53_record" "cert_validation" {
   records         = [each.value.record]
   ttl             = 60
   type            = each.value.type
-  zone_id         = data.aws_route53_zone.primary.zone_id
+  zone_id         = data.aws_route53_zone.primary[0].zone_id
 }

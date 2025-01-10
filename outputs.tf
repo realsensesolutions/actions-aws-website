@@ -1,7 +1,3 @@
-output "domain_name_servers" {
-  value = data.aws_route53_zone.primary.name_servers
-}
-
 output "bucket_name" {
   value = aws_s3_bucket.website.id
 }
