@@ -30,6 +30,9 @@ jobs:
   plan:
     needs: apply
     runs-on: ubuntu-latest
+    environment: 
+      url: https://${{ steps.website.outputs.domain }}
+      name: "production"
     steps:
       - name: Check out repo
         uses: actions/checkout@v4
