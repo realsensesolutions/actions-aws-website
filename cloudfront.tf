@@ -42,7 +42,7 @@ resource "aws_cloudfront_distribution" "cloudfront" {
 
   dynamic "viewer_certificate" {
 
-    for_each = var.domain !="" ? toset([]) : toset([1])
+    for_each = var.domain != "" ? toset([1]) : toset([])
 
     content {
       acm_certificate_arn = aws_acm_certificate.website_cert[0].arn
