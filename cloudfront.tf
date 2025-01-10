@@ -50,7 +50,7 @@ resource "aws_cloudfront_distribution" "cloudfront" {
   }
 
   dynamic "viewer_certificate" {
-    for_each = var.domain != "" ? toset([1]) : toset([])
+    for_each = var.domain != "" ? toset([]) : toset([1])
 
     content {
       cloudfront_default_certificate = true
