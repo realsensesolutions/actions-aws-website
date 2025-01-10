@@ -41,12 +41,20 @@ resource "aws_cloudfront_distribution" "cloudfront" {
   }
 
   dynamic "viewer_certificate" {
-
     for_each = var.domain != "" ? toset([1]) : toset([])
 
     content {
       acm_certificate_arn = aws_acm_certificate.website_cert[0].arn
       ssl_support_method  = "sni-only"
     }
+  }
+
+  dynamic "viewer_certificate" {
+    for_each = var.domain != "" ? toset([1]) : toset([])
+
+    content {
+      cloudfront_default_certificate = true
+    }
   } 
+
 }
