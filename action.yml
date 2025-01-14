@@ -13,7 +13,7 @@ inputs:
 outputs:
   domain:
     description: "Public reachable domain, this could be the Route53 or CloudDistrubution domain name"
-    value: ${{ inputs.domain || steps.tf-outputs.outputs.distribution-domain-name }}
+    value: ${{ steps.tf-outputs.outputs.distribution-domain-name }}
 runs:
   using: "composite"
   steps:
