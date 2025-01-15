@@ -1,6 +1,10 @@
 name: 'Actions AWS Website'
 description: 'Provision all the resource required to host a website in AWS'
 inputs:
+  name: 
+    description: 'Unique identifies for this website on the infra instance'
+    required: false
+    default: 'empty'
   domain: 
     description: 'Full domain of the website'
     required: false
@@ -25,7 +29,7 @@ runs:
         terraform init \
           -backend-config="bucket=${{ env.TF_BACKEND_s3 }}" \
           -backend-config="dynamodb_table=${{ env.TF_BACKEND_dynamodb }}" \
-          -backend-config="key=${{ inputs.domain || 'empty' }}" 
+          -backend-config="key=${{ inputs.name }}" 
     - name: search hosted zone domain
       shell: bash
       id: route53
