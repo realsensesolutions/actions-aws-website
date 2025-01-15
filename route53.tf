@@ -1,6 +1,6 @@
 data "aws_route53_zone" "primary" {
-  count        = var.hosted_zone_domain != "" ? 1 : 0
-  name = var.hosted_zone_domain
+  count        = var.domain != "" ? 1 : 0
+  name = var.domain
 }
 
 resource "aws_route53_record" "domain" {
