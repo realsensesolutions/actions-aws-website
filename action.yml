@@ -33,7 +33,6 @@ runs:
     - name: search hosted zone domain
       shell: bash
       id: route53
-      if: inputs.domain
       env: 
         DOMAIN: ${{ inputs.domain }}
       # search the closest hosted zone for example: 
