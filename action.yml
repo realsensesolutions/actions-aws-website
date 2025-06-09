@@ -10,6 +10,10 @@ inputs:
     required: false
   content-path:
     description: 'folder to publish as root of the website'
+  spa:
+    description: 'Enable SPA (Single Page Application) routing support'
+    required: false
+    default: 'false'
   action: 
     description: "Desire outcome: apply, plan or destroy"
     required: false
@@ -50,6 +54,7 @@ runs:
       env: 
         TF_VAR_hosted_zone_domain: ${{ steps.route53.outputs.hosted-zone-domain }}
         TF_VAR_domain: ${{ inputs.domain }}
+        TF_VAR_spa: ${{ inputs.spa }}
         ACTION: ${{ inputs.action }}
         # we need to add '-auto-aprove' for apply/destroy
         ACTION_ARGS: ${{ inputs.action != 'plan' && '-auto-approve' || '' }} 
