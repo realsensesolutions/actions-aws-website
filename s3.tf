@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "website" {
-  bucket_prefix = var.domain
+  bucket_prefix = split(".", var.domain)[0]
   force_destroy = true
 }
 
