@@ -61,8 +61,8 @@ runs:
         if [ -z "$ALTERNATE_DOMAINS" ]; then
           echo "alternate_domains_json=[]" >> $GITHUB_OUTPUT
         else
-          # Convert comma-separated string to JSON array
-          JSON_ARRAY=$(echo "$ALTERNATE_DOMAINS" | tr ',' '\n' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | jq -R . | jq -s .)
+          # Convert comma-separated string to compact JSON array (single line)
+          JSON_ARRAY=$(echo "$ALTERNATE_DOMAINS" | tr ',' '\n' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | jq -R . | jq -sc .)
           echo "alternate_domains_json=$JSON_ARRAY" >> $GITHUB_OUTPUT
         fi
     - name: run action
