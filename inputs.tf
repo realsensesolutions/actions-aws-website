@@ -8,6 +8,12 @@ variable "domain" {
   type        = string
 }
 
+variable "alternate_domains" {
+  description = "List of alternate domains (e.g., www.example.com) to be added as aliases"
+  type        = list(string)
+  default     = []
+}
+
 variable "spa" {
   description = "Enable SPA (Single Page Application) routing support"
   type        = bool

@@ -8,6 +8,10 @@ inputs:
   domain: 
     description: 'Full domain of the website'
     required: false
+  alternate-domains:
+    description: 'Comma-separated list of alternate domains (e.g., www.example.com)'
+    required: false
+    default: ''
   content-path:
     description: 'folder to publish as root of the website'
   spa:
@@ -48,12 +52,26 @@ runs:
           jq -r '.HostedZones[].Name' | \
           awk -v domain=${{ env.DOMAIN }}. '{if (index(domain, $0) != 0) print $0}')
         echo "hosted-zone-domain=$HOSTED_ZONE_DOMAIN" >> $GITHUB_OUTPUT
+    - name: parse alternate domains
+      shell: bash
+      id: parse-domains
+      env:
+        ALTERNATE_DOMAINS: ${{ inputs.alternate-domains }}
+      run: |
+        if [ -z "$ALTERNATE_DOMAINS" ]; then
+          echo "alternate_domains_json=[]" >> $GITHUB_OUTPUT
+        else
+          # Convert comma-separated string to JSON array
+          JSON_ARRAY=$(echo "$ALTERNATE_DOMAINS" | tr ',' '\n' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | jq -R . | jq -s .)
+          echo "alternate_domains_json=$JSON_ARRAY" >> $GITHUB_OUTPUT
+        fi
     - name: run action
       shell: bash
       working-directory: ${{ github.action_path }}
       env: 
         TF_VAR_hosted_zone_domain: ${{ steps.route53.outputs.hosted-zone-domain }}
         TF_VAR_domain: ${{ inputs.domain }}
+        TF_VAR_alternate_domains: ${{ steps.parse-domains.outputs.alternate_domains_json }}
         TF_VAR_spa: ${{ inputs.spa }}
         ACTION: ${{ inputs.action }}
         # we need to add '-auto-aprove' for apply/destroy

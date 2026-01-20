@@ -1,6 +1,7 @@
 resource "aws_acm_certificate" "website_cert" {
   count                     = var.domain != "" ? 1 : 0 
   domain_name               = var.domain
+  subject_alternative_names = length(var.alternate_domains) > 0 ? var.alternate_domains : null
   validation_method         = "DNS"
 
   lifecycle {
