@@ -38,7 +38,7 @@ runs:
       run: |
         terraform init \
           -backend-config="bucket=${{ env.TF_BACKEND_s3 }}" \
-          -backend-config="dynamodb_table=${{ env.TF_BACKEND_dynamodb }}" \
+          -backend-config="use_lockfile=true" \
           -backend-config="key=${{ inputs.name }}" 
     - name: search hosted zone domain
       shell: bash
